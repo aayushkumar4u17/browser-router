@@ -1,14 +1,16 @@
-import React, { Fragment, useState } from "react";
-import style from "./login.module.css";
 import axios from "axios";
-import toast from "react-hot-toast";
+import React, { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import style from "./login.module.css";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const [loginUser, setLoginUser] = useState({
     email: "",
     password: "",
   });
+
+  let [registeredUser, SetRegisteredUser] = useState(null);
 
   const navigate = useNavigate();
 
@@ -17,17 +19,30 @@ const Login = () => {
     setLoginUser({ ...loginUser, [name]: value });
   };
 
+  useEffect(() => {
+    async function fetchRegisteredUser() {
+      let { data } = await axios.get("http://localhost:5000/users");
+      console.log(data);
+      SetRegisteredUser(data);
+    }
+    fetchRegisteredUser();
+  }, []);
+
   const loginSubmit = (e) => {
     e.preventDefault();
     console.log(loginUser);
-    if (loginUser.email.trim() !== "" && loginUser.password.trim() !== "") {
-      axios.post("http://localhost:5173/login", loginUser).then(() => {
-        toast.success("Logged in successfully");
-        setLoginUser({ email: "", password: "" });
-        navigate("/home");
-      });
+    let authUser = registeredUser.find((user) => {
+      return (
+        user.email === loginUser.email && user.password === loginUser.password
+      );
+    });
+    console.log(authUser);
+    if (authUser) {
+      sessionStorage.setItem("TOKEN", authUser.id);
+      navigate("/profile")
     } else {
-      console.log("empty input");
+      toast.error("Not Registered");
+      navigate("/register");
     }
   };
 

@@ -1,0 +1,19 @@
+#spinner{
+    position: absolute;
+    top: 45%;
+    left: 47%;
+    height: 70px;
+    width: 70px;
+    border: 10px solid rgba(0, 0, 0, 0.419);
+    border-top: 10px solid rgb(27, 27, 214);
+    border-radius: 50%;
+    animation-name: spin;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+@keyframes spin {
+    from{transform: rotate(0deg);}
+    to{
+        transform: rotate(360deg);
+    }
+}

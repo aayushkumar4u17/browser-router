@@ -11,7 +11,7 @@
 .card{
     border: 1px solid gray;
     height: 150px;
-    width: 200px;
+    width: 230px;
     padding: 10px;
     display: flex;
     flex-direction: column;
